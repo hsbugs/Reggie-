@@ -143,3 +143,19 @@ CommonController
 download:文件下载
 ```
 
+#### 菜品管理
+
+````properties
+com.itheima.reggie.controller
+DishController
+save:新增菜品
+````
+
+#### 手机验证码
+
+```properties
+com.itheima.reggie.controller
+UserController
+sendMsg:验证码
+```
+

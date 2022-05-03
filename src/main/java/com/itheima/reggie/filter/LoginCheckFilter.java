@@ -36,6 +36,9 @@ public class LoginCheckFilter implements Filter {
                 "/employee/logout",  //退出请求
                 "/backend/**",  //静态资源
                 "/front/**", //移动端资源
+                "/common/**",
+                "/user/sendMsg",//短信
+                "/user/login"    //输完验证码登录
         };
 
         //判断本次请求是否需要处理
@@ -58,6 +61,18 @@ public class LoginCheckFilter implements Filter {
             filterChain.doFilter(request,response);
             return;
         }
+
+        //判断移动端登录状态 如果登录 直接放行
+        if ( request.getSession().getAttribute("user") != null){
+            log.info("登录用户id为: {}",request.getSession().getAttribute("user"));
+
+            Long userId = (Long) request.getSession().getAttribute("user");
+            BaseContext.setCurrentId(userId);
+
+            filterChain.doFilter(request,response);
+            return;
+        }
+
 
         //如果未登录则返回未登录结果, 通过输出流的方式向客户端响应数据
         response.getWriter().write(JSON.toJSONString(R.error("NOTLOGIN")));
